@@ -3,7 +3,7 @@ defmodule PhoneHome.Note do
 
   schema "notes" do
     field :user_phone, :string
-    field :end_time, Ecto.Time
+    field :end_time, Ecto.DateTime
     field :contact_phone, :string
     field :contact_email, :string
     field :trip_plan, :string
