@@ -1,0 +1,18 @@
+defmodule PhoneHome.NoteTest do
+  use PhoneHome.ModelCase
+
+  alias PhoneHome.Note
+
+  @valid_attrs %{contact_email: "some content", contact_phone: "some content", end_time: %{hour: 14, min: 0, sec: 0}, trip_plan: "some content", user_phone: "some content"}
+  @invalid_attrs %{}
+
+  test "changeset with valid attributes" do
+    changeset = Note.changeset(%Note{}, @valid_attrs)
+    assert changeset.valid?
+  end
+
+  test "changeset with invalid attributes" do
+    changeset = Note.changeset(%Note{}, @invalid_attrs)
+    refute changeset.valid?
+  end
+end

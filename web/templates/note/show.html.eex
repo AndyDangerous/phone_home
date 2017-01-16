@@ -1,0 +1,33 @@
+<h2>Show note</h2>
+
+<ul>
+
+  <li>
+    <strong>User phone:</strong>
+    <%= @note.user_phone %>
+  </li>
+
+  <li>
+    <strong>End time:</strong>
+    <%= @note.end_time %>
+  </li>
+
+  <li>
+    <strong>Contact phone:</strong>
+    <%= @note.contact_phone %>
+  </li>
+
+  <li>
+    <strong>Contact email:</strong>
+    <%= @note.contact_email %>
+  </li>
+
+  <li>
+    <strong>Trip plan:</strong>
+    <%= @note.trip_plan %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: note_path(@conn, :edit, @note) %>
+<%= link "Back", to: note_path(@conn, :index) %>
