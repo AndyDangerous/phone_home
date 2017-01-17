@@ -14,11 +14,12 @@ defmodule PhoneHome do
       supervisor(PhoneHome.Endpoint, []),
       # Start your own worker by calling: PhoneHome.Worker.start_link(arg1, arg2, arg3)
       # worker(PhoneHome.Worker, [arg1, arg2, arg3]),
+      supervisor(PhoneHome.Supervisor, [%{}]),
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
     # for other strategies and supported options
-    opts = [strategy: :one_for_one, name: PhoneHome.Supervisor]
+    opts = [strategy: :one_for_one]
     Supervisor.start_link(children, opts)
   end
 
