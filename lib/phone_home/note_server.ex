@@ -1,7 +1,6 @@
 defmodule PhoneHome.NoteServer do
   use GenServer
   import Supervisor.Spec
-  require IEx
 
   defmodule State do
     defstruct sup: nil, worker_sup: nil, mfa: {PhoneHome.NoteWorker, :start_link, []}
@@ -31,17 +30,17 @@ defmodule PhoneHome.NoteServer do
     {:ok, state}
   end
 
-  def handle_cast({:new_note, %{end_time: end_time} = note_params}, state) do
+  def handle_cast({:new_note, %{"end_time" => end_time} = note_params}, state) do
     {:ok, worker_pid} = Supervisor.start_child(state.worker_sup, [note_params])
     Process.link(worker_pid)
-    # PhoneHome.Timer.new_time(worker_pid, end_time)
+    PhoneHome.Timer.create_entry(worker_pid, end_time)
     {:noreply, state}
   end
 
   # handle worker deaths
 
-  def handle_info(:start_timer, %{sup: sup} = state) do
-    {:ok, _timer_sup} = Supervisor.start_child(sup, timer_spec())
+  def handle_info(:start_timer, state) do
+    PhoneHome.Timer.initialize
     {:noreply, state}
   end
 
@@ -51,10 +50,6 @@ defmodule PhoneHome.NoteServer do
   end
 
   ## Helper Functions
-
-  defp timer_spec do
-    worker(PhoneHome.Timer, [])
-  end
 
   defp note_supervisor_spec(mfa) do
     opts = [restart: :temporary]

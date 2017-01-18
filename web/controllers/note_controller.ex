@@ -16,6 +16,7 @@ defmodule PhoneHome.NoteController do
   def create(conn, %{"note" => note_params}) do
     changeset = Note.changeset(%Note{}, note_params)
 
+    PhoneHome.NoteServer.create(note_params)
     case Repo.insert(changeset) do
       {:ok, _note} ->
         conn
