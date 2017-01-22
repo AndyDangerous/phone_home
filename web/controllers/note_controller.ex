@@ -16,13 +16,13 @@ defmodule PhoneHome.NoteController do
   def create(conn, %{"note" => note_params}) do
     changeset = Note.changeset(%Note{}, note_params)
 
-    PhoneHome.NoteServer.create(note_params)
-    case Repo.insert(changeset) do
-      {:ok, _note} ->
+    case changeset.valid? do
+      true ->
+        PhoneHome.NoteServer.create(note_params)
         conn
         |> put_flash(:info, "Note created successfully.")
         |> redirect(to: note_path(conn, :index))
-      {:error, changeset} ->
+      false ->
         render(conn, "new.html", changeset: changeset)
     end
   end

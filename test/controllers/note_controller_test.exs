@@ -2,7 +2,7 @@ defmodule PhoneHome.NoteControllerTest do
   use PhoneHome.ConnCase
 
   alias PhoneHome.Note
-  @valid_attrs %{contact_email: "some content", contact_phone: "some content", end_time: %{hour: 14, min: 0, sec: 0}, trip_plan: "some content", user_phone: "some content"}
+  @valid_attrs %{contact_email: "some content", contact_phone: "some content", end_time: Timex.now, trip_plan: "some content", user_phone: "some content"}
   @invalid_attrs %{}
 
   test "lists all entries on index", %{conn: conn} do
@@ -18,7 +18,6 @@ defmodule PhoneHome.NoteControllerTest do
   test "creates resource and redirects when data is valid", %{conn: conn} do
     conn = post conn, note_path(conn, :create), note: @valid_attrs
     assert redirected_to(conn) == note_path(conn, :index)
-    assert Repo.get_by(Note, @valid_attrs)
   end
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
