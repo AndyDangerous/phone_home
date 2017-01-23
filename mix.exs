@@ -19,7 +19,7 @@ defmodule PhoneHome.Mixfile do
   def application do
     [mod: {PhoneHome, []},
      applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex, :timex]]
+                    :phoenix_ecto, :postgrex, :timex, :quantum]]
   end
 
   # Specifies which paths to compile per environment.
@@ -40,6 +40,7 @@ defmodule PhoneHome.Mixfile do
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
       {:timex, "~> 3.0"},
+      {:quantum, ">= 1.8.1"},
     ]
   end
 
