@@ -40,7 +40,7 @@ defmodule PhoneHome.NoteServer do
 
   def handle_call({:update_workers, pids}, _from, state) do
     pids
-    |> Enum.each(fn(pid) -> update_worker(pid) end)
+    |> Enum.each(fn(phone_number) -> update_worker(phone_number) end)
     {:reply, state, state}
   end
 
@@ -76,8 +76,8 @@ defmodule PhoneHome.NoteServer do
     supervisor(PhoneHome.NoteSupervisor, [mfa], opts)
   end
 
-  defp update_worker(pid) do
-    case PhoneHome.NoteWorker.update(pid) do
+  defp update_worker(phone_number) do
+    case PhoneHome.NoteWorker.update(phone_number) do
       :await_check_in ->
         :ok
       {:send_reminder, user_info} ->

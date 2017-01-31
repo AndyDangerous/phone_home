@@ -13,19 +13,19 @@ defmodule PhoneHome.NoteWorker do
   ## Client API
 
   def start_link(params) do
-    GenServer.start_link(__MODULE__, params)
+    GenServer.start_link(__MODULE__, params, [name: String.to_atom(params[:user_phone])])
   end
 
-  def status(pid) do
-    GenServer.call(pid, :status)
+  def status(phone_number) do
+    GenServer.call(String.to_atom(phone_number), :status)
   end
 
-  def safe(pid) do
-    GenServer.call(pid, :safe)
+  def safe(phone_number) do
+    GenServer.call(String.to_atom(phone_number), :safe)
   end
 
-  def update(pid) do
-    GenServer.call(pid, :update)
+  def update(phone_number) do
+    GenServer.call(String.to_atom(phone_number), :update)
   end
 
   ## Server Callbacks
