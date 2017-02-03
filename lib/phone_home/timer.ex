@@ -14,11 +14,11 @@ defmodule PhoneHome.Timer do
     |> insert_times(pid)
   end
 
-  def retrieve_pids do
-    retrieve_pids(Timex.now)
+  def retrieve_phone_numbers do
+    retrieve_phone_numbers(Timex.now)
   end
 
-  def retrieve_pids(datetime) do
+  def retrieve_phone_numbers(datetime) do
     erl_time = datetime
     |> to_erl_time
 

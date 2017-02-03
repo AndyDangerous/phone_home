@@ -20,8 +20,12 @@ defmodule PhoneHome.NoteServer do
     GenServer.cast(__MODULE__, :check_timer)
   end
 
-  def update_workers(pids) do
-    GenServer.call(__MODULE__, {:update_workers, pids})
+  def update_workers(phone_numbers) do
+    GenServer.call(__MODULE__, {:update_workers, phone_numbers})
+  end
+
+  def check_user_in(user_phone) do
+    GenServer.call(__MODULE__, {:check_user_in, user_phone})
   end
 
   ## Server Callbacks
@@ -38,8 +42,8 @@ defmodule PhoneHome.NoteServer do
     {:ok, state}
   end
 
-  def handle_call({:update_workers, pids}, _from, state) do
-    pids
+  def handle_call({:update_workers, phone_numbers}, _from, state) do
+    phone_numbers
     |> Enum.each(fn(phone_number) -> update_worker(phone_number) end)
     {:reply, state, state}
   end
@@ -52,8 +56,8 @@ defmodule PhoneHome.NoteServer do
   end
 
   def handle_cast(:check_timer, state) do
-    pids = PhoneHome.Timer.retrieve_pids
-    update_workers(pids)
+    phone_numbers = PhoneHome.Timer.retrieve_phone_numbers
+    update_workers(phone_numbers)
     {:noreply, state}
   end
 
