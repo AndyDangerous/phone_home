@@ -11,6 +11,12 @@ defmodule PhoneHome.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+
+    scope "/api" do
+      scope "/v1", PhoneHome do
+        post "/check_in", SmsController, :check_in
+      end
+    end
   end
 
   scope "/", PhoneHome do
@@ -23,6 +29,6 @@ defmodule PhoneHome.Router do
 
   # Other scopes may use custom stacks.
   # scope "/api", PhoneHome do
-  #   pipe_through :api
-  # end
+    #   pipe_through :api
+    # end
 end

@@ -20,10 +20,6 @@ defmodule PhoneHome.NoteServer do
     GenServer.cast(__MODULE__, :check_timer)
   end
 
-  def update_workers(phone_numbers) do
-    GenServer.call(__MODULE__, {:update_workers, phone_numbers})
-  end
-
   def check_user_in(user_phone) do
     GenServer.call(__MODULE__, {:check_user_in, user_phone})
   end
@@ -42,10 +38,9 @@ defmodule PhoneHome.NoteServer do
     {:ok, state}
   end
 
-  def handle_call({:update_workers, phone_numbers}, _from, state) do
-    phone_numbers
-    |> Enum.each(fn(phone_number) -> update_worker(phone_number) end)
-    {:reply, state, state}
+  def handle_call({:check_user_in, phone_number}, _from, state) do
+    PhoneHome.NoteWorker.safe(phone_number)
+    {:reply, {:ok, phone_number}, state}
   end
 
   def handle_cast({:new_note, %{"end_time" => end_time} = note_params}, state) do
@@ -78,6 +73,11 @@ defmodule PhoneHome.NoteServer do
   defp note_supervisor_spec(mfa) do
     opts = [restart: :temporary]
     supervisor(PhoneHome.NoteSupervisor, [mfa], opts)
+  end
+
+  defp update_workers(phone_numbers) do
+    phone_numbers
+    |> Enum.each(fn(phone_number) -> update_worker(phone_number) end)
   end
 
   defp update_worker(phone_number) do
